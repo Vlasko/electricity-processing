@@ -1,5 +1,16 @@
 import matplotlib.pyplot as plt
 
+def simple_graphing(dataframe):
+    fig_size = plt.rcParams["figure.figsize"]
+    fig_size[0] = 15
+    fig_size[1] = 8
+    fig = plt.figure()
+    fig, ax1 = plt.subplots()
+    ax1.plot(dataframe.index, dataframe.iloc[:,0], 'b')
+    ax1.set_ylabel(dataframe.columns[0])
+    ax1.set_xlabel('Datetime')
+    plt.show()
+
 def total_graphing(dictionary):
 
     for key, item in dictionary.items():
