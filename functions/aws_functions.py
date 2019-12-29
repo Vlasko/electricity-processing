@@ -3,7 +3,7 @@ import boto3
 from botocore.exceptions import NoCredentialsError
 
 # Local Application Imports
-from AWS_keys import ACCESS_KEY, SECRET_KEY
+from keys.aws_keys import ACCESS_KEY, SECRET_KEY
 
 def get_bucket_contents(bucket_name):
     s3 = boto3.client('s3', aws_access_key_id=ACCESS_KEY,
