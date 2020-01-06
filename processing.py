@@ -22,5 +22,5 @@ price_df = clean_price(price_path)
 # %% display a dataframe
 price_df
 
-simple_graphing(price_df)
-simple_graphing(demand_df)
+simple_graphing(price_df['2019-12-28':])
+simple_graphing(demand_df['2019-12-28':])
