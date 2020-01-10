@@ -1,5 +1,6 @@
 # Standard Library Imports
 import os
+import pandas as pd
 # from statistics import mean, stdev
 
 # Third Party Imports
@@ -20,7 +21,7 @@ price_path = directory+'/files/prices/'
 price_df = clean_price(price_path)
 
 # %% display a dataframe
-price_df
+merged_df = pd.merge(demand_df, price_df, left_index = True, right_index = True)
 
 simple_graphing(price_df['2019-12-28':])
 simple_graphing(demand_df['2019-12-28':])
