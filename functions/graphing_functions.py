@@ -11,6 +11,16 @@ def simple_graphing(dataframe):
     ax1.set_xlabel('Datetime')
     plt.show()
 
+def combined_graphing(first_df, second_df):
+    fig_size = plt.rcParams["figure.figsize"]
+    fig_size[0] = 15
+    fig_size[1] = 8
+    fig = plt.figure()
+    fig, ax1 = plt.subplots()
+    ax2 = ax1.twinx()
+    ax1.plot(first_df.index, first_df.iloc[:,0], 'b')
+    ax2.plot(second_df.index, second_df.iloc[:,0], 'r')
+
 def total_graphing(dictionary):
 
     for key, item in dictionary.items():
