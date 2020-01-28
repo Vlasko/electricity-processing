@@ -2,3 +2,4 @@
 keys
 files
 *.pyc
+.DS_Store
