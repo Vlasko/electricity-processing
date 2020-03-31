@@ -33,7 +33,7 @@ def clean_price(price_path):
                                    index_col='Timestamp',
                                    parse_dates=True)
                 price_data = price_data.append(data)
-    price_data.index = pd.to_datetime(price_data.index)
+    price_data.index = pd.to_datetime(price_data.index.tz_localize('UTC'))
     price_data = price_data.shift(1,'H') # temporary fix for time zone issue
     price_data = price_data.loc[~price_data.index.duplicated(keep='first')]
     resampled_price = price_data.resample('15T').ffill()
