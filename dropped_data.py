@@ -29,13 +29,6 @@ corr = data.corr()
 f, ax = plt.subplots(figsize=(12, 10))
 # sns.heatmap(corr,annot=True, cmap="coolwarm")
 
-#Sklearn Libraries
-
-
-
-data.isnull().values.any()
-
-
 SEED = 1234
 timestamps = data.index.astype(np.int64).to_numpy().reshape(-1, 1)
 X_train, X_test, y_train, y_test = train_test_split(timestamps, data.loc[:,'Demand (W)'],
@@ -70,3 +63,51 @@ plt.show()
 # Linear regression does not work here, all predicted values are around 27 W,
 # when in fact the demand from the fridge is often around zero, but then spikes
 # to values of around 100 W.
+
+# Try ARIMA instead
+series = demand_df['2020-01-01 00':'2020-03-20 23'].loc[:,'Demand (W)']
+
+from pandas.plotting import autocorrelation_plot
+autocorrelation_plot(series).set_xlim([1, 11])
+plt.show()
+
+from statsmodels.tsa.arima_model import ARIMA
+from sklearn.metrics import mean_squared_error
+
+# fit model
+model = ARIMA(series, order=(4,1,0))
+model_fit = model.fit(disp=0)
+print(model_fit.summary())
+
+# plot residual errors
+residuals = pd.DataFrame(model_fit.resid)
+residuals.plot()
+plt.show()
+residuals.plot(kind='kde')
+plt.show()
+print(residuals.describe())
+
+X = series.values[:500] #start with first 100 values
+size = int(len(X) * 0.66)
+train, test = X[0:size], X[size:len(X)]
+history = [x for x in train]
+predictions = list()
+for t in range(len(test)):
+	model = ARIMA(history, order=(4,1,0))
+	model_fit = model.fit(disp=0)
+	output = model_fit.forecast()
+	yhat = output[0]
+	predictions.append(yhat)
+	obs = test[t]
+	history.append(obs)
+
+error = mean_squared_error(test, predictions)
+print('Test MSE: %.3f' % error)
+
+# plot
+plt.plot(test)
+plt.plot(predictions, color='red')
+plt.show()
+
+# This not actually too bad, the general shape is right, however where the real 
+# data goes up the prediction goes down around 4 lags in.
