@@ -87,7 +87,7 @@ residuals.plot(kind='kde')
 plt.show()
 print(residuals.describe())
 
-X = series.values[:500] #start with first 100 values
+X = series.values[:1000] #start with first 1000 values
 size = int(len(X) * 0.66)
 train, test = X[0:size], X[size:len(X)]
 history = [x for x in train]
@@ -105,9 +105,15 @@ error = mean_squared_error(test, predictions)
 print('Test MSE: %.3f' % error)
 
 # plot
-plt.plot(test)
-plt.plot(predictions, color='red')
+plt.figure(figsize=(12,8))
+plt.plot(test, label='Test Data')
+plt.plot(predictions, color='red', label='Predicted Data')
+plt.xlabel('Lags', fontsize=15)
+plt.xlim(0,300)
+plt.ylabel('Demand (W)', fontsize=15)
+plt.ylim(0,250)
+plt.title('Figure showing ARIMA model of fridge demand data', fontsize=18)
+plt.legend()
 plt.show()
 
-# This not actually too bad, the general shape is right, however where the real 
-# data goes up the prediction goes down around 4 lags in.
+# This not actually too bad, the general shape is right.
